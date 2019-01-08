@@ -1,5 +1,7 @@
 package controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import service.CategoryService;
 import service.ProductService;
+import util.Constants;
 
 import java.util.List;
 
@@ -99,6 +102,48 @@ public class ProductController extends BaseController {
     @RequestMapping("queryAllPages")
     private String queryAllPages() {
         return queryAll(1);
+    }
+
+
+    @RequestMapping("find")
+    private String findByLikeName(@RequestParam String likeName){
+        likeName = "%"+likeName+"%";
+        List<Product> list = productService.queryList("findByLikeName", likeName);
+        int i = 1;
+        String notFoundMessage = "";
+        while(list.size()==0){
+            notFoundMessage = "抱歉，没有查到您要的产品，为您推荐以下产品";
+            likeName = likeName.substring(i++);
+            list = productService.queryList("findByLikeName", likeName);
+            if(i<=likeName.length()){
+                notFoundMessage = "抱歉，没有查到您要的信息！";
+                break;
+            }
+        }
+        for (Product product: list
+                ) {
+            product.setDetailPictures(null);
+            product.setSlidePictures(null);
+            String backImage = Constants.NGINX_HOST+"/cover_picture/"+
+                    product.getCategory().getCategoryId()+ "/" +
+                    product.getCategoryId()+"/" +
+                    product.getProductId() + "/"+
+                    product.getCoverPicture();
+            product.setCoverPictureUrl(backImage);
+
+        }
+        String productList = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            productList = mapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("测试模糊查询productList："+productList);
+        System.out.println("查不到时会有信息:"+notFoundMessage);
+        session.setAttribute("notFoundMessage", notFoundMessage);
+        session.setAttribute("productList", productList);
+        return "redirect:/checkPage.jsp";
     }
 
 }
