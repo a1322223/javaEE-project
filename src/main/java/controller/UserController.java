@@ -82,9 +82,8 @@ public class UserController extends BaseController {
             System.out.println(link);
             session.setAttribute("message", "邮件已经发送");
             return "redirect:/email.jsp";
-            // send email
         }
-        request.setAttribute("message", "邮箱不存在");
+        request.setAttribute("errorMessage", "邮箱不存在");
         return "/email.jsp";
     }
 
