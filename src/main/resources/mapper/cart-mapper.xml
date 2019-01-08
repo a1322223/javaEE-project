@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cart">
+    <insert id="create" parameterType="cart" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.cart (
+            productId,
+            number,
+            createTime,
+            userId
+        )
+        VALUES (
+            #{productId},
+            #{number},
+            now(),
+            #{userId}
+        )
+    </insert>
+    <delete id="remove">
+        DELETE
+        FROM db_a.cart
+        WHERE cart.productId = #{id}
+    </delete>
+    <update id="modify" parameterType="int">
+        UPDATE db_a.cart c inner join db_a.product p on c.productId = p.id
+            inner join db_a.user u on c.userId = u.id
+        SET
+            c.number   = #{number},
+            updateTime = now()
+        WHERE productId = #{id}
+    </update>
+    <resultMap id="queryAll_map" type="product">
+        <id property="id" column="id"/>
+        <result property="productId" column="productId"/>
+        <result property="coverPicture" column="coverPicture"/>
+        <result property="title" column="title"/>
+        <result property="price" column="price"/>
+        <result property="originPrice" column="originPrice"/>
+        <association property="cart" javaType="cart">
+            <id property="id" column="cartId"/>
+            <result property="number" column="number"/>
+        </association>
+        <association property="category" javaType="category">
+            <id property="id" column="subId"/>
+            <result property="categoryId" column="supId"/>
+        </association>
+    </resultMap>
+    <select id="queryAll" parameterType="int" resultMap="queryAll_map">
+        SELECT
+            p.id,
+            p.productId,
+            p.coverPicture,
+            p.title,
+            p.price,
+            p.originPrice,
+            c.id            as cartId,
+            c.number,
+            cate.id         as subid,
+            cate.categoryId as supId
+        FROM db_a.cart c
+            inner join db_a.product p on c.productId = p.id
+            inner join db_a.user u on c.userId = u.id
+            inner join db_a.category cate on p.categoryId = cate.id
+        where u.id = #{id}
+    </select>
+    <select id="queryCartNumber" parameterType="int" resultType="java.lang.Integer">
+        select sum(number)
+        from db_a.cart
+        where userId = #{userId}
+        group by userId;
+    </select>
+
+    <select id="queryCartId" parameterType="cart" resultType="java.lang.Integer">
+        select id
+        from db_a.cart
+        where productId = #{productId} and userId = #{userId};
+    </select>
+
+    <update id="updateNumberById" parameterType="cart">
+        update db_a.cart
+        set number = number + #{number}
+        where productId = #{productId} and userId = #{userId}
+    </update>
+    <select id="orderConfirm" parameterType="map" resultMap="queryAll_map">
+        SELECT
+        p.id,
+        p.productId,
+        p.coverPicture,
+        p.title,
+        p.price,
+        p.originPrice,
+        c.id as cartId,
+        c.number,
+        cate.id as subid,
+        cate.categoryId as supId
+        FROM db_a.cart c
+        inner join db_a.product p on c.productId = p.id
+        inner join db_a.user u on c.userId = u.id
+        inner join db_a.category cate on p.categoryId = cate.id
+        where u.id = #{id} and c.id in
+        <foreach collection="list" open="(" separator="," close=")" item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+    <select id="confirmOrder" parameterType="map" resultMap="queryAll_map">
+        SELECT p.id, p.coverPicture, p.title, p.price, p.originPrice, c.id as cartId, c.number
+        FROM db_a.cart c
+        inner join db_a.product p on c.productId = p.id
+        inner join db_a.user u on c.userId = u.id
+        where u.id = #{id} and c.id in
+        # MyBatis 动态 SQL
+        <foreach collection="list" item="id" open="(" separator="," close=")" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

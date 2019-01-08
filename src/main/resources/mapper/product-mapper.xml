@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+    <insert id="create" parameterType="product" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.product (
+            title,
+            coverPicture,
+            slidePictures,
+            detailPictures,
+            `desc`,
+            price,
+            originPrice,
+            createTime,
+            updateTime,
+            status,
+            categoryId
+        )
+        VALUES (
+            #{title},
+            #{coverPicture},
+            #{slidePictures},
+            #{detailPictures},
+            #{desc},
+            #{price},
+            #{originPrice},
+            now(),
+            NULL,
+            #{status},
+            #{categoryId}
+        )
+    </insert>
+    <delete id="remove">
+        DELETE FROM db_a.product
+        WHERE product.id = #{id}
+    </delete>
+    <update id="modify">
+        UPDATE db_a.product
+        SET
+            title          = #{title},
+            coverPicture   = #{coverPicture},
+            slidePictures  = #{slidePictures},
+            detailPictures = #{detailPictures},
+            `desc`         = #{desc},
+            price          = #{price},
+            originPrice    = #{originPrice},
+            updateTime     = now(),
+            status         = #{status},
+            categoryId     = #{categoryId}
+        WHERE product.id = #{id}
+    </update>
+    <select id="queryAll" resultType="product">
+        SELECT *
+        FROM db_a.product
+        ORDER BY id
+    </select>
+    <select id="queryById" resultMap="product_map">
+        SELECT p.*, c.id as subCategoryId, c.categoryId as supCategoryId
+        FROM db_a.product p
+            inner join db_a.category c on p.categoryId = c.id
+        WHERE p.id = #{id}
+    </select>
+    <resultMap id="queryIndexProduct_map" type="product">
+        <id property="id" column="id"/>
+        <result property="productId" column="productId"/>
+        <result property="title" column="title"/>
+        <result property="coverPicture" column="coverPicture"/>
+        <result property="price" column="price"/>
+        <result property="originPrice" column="originPrice"/>
+        <result property="desc" column="desc"/>
+        <result property="categoryId" column="subId"/>
+        <association property="category" javaType="category">
+            <result property="categoryId" column="supId"/>
+        </association>
+    </resultMap>
+    <select id="queryIndexProduct" resultMap="queryIndexProduct_map">
+        select
+            c.categoryId as supId,
+            p.id,
+            p.productId,
+            p.title,
+            p.coverPicture,
+            p.price,
+            p.originPrice,
+            p.`desc`,
+            p.categoryId as subId
+        from db_a.product p inner join db_a.category c
+                on p.categoryId = c.id
+        where p.status = 0 and p.stock > 0 and c.categoryId = #{supId}
+        order by p.title
+        limit 8 offset 0
+    </select>
+    <select id="queryProductsBySubCategoryId" parameterType="int" resultType="product">
+        select p.id, p.productId, p.title, p.desc, p.price, p.originPrice, p.coverPicture, p.mp4, p.webm
+        from db_a.category sub
+            inner join db_a.product p on sub.id = p.categoryId
+        where p.categoryId = #{id}
+    </select>
+    <resultMap id="product_map" type="product">
+        <id property="id" column="id"/>
+        <result property="productId" column="productId"/>
+        <result property="title" column="title"/>
+        <result property="desc" column="desc"/>
+        <result property="price" column="price"/>
+        <result property="originPrice" column="originPrice"/>
+        <result property="coverPicture" column="coverPicture"/>
+        <result property="slidePictures" column="slidePictures"/>
+        <result property="detailPictures" column="detailPictures"/>
+        <result property="webm" column="webm"/>
+        <result property="mp4" column="mp4"/>
+        <result property="spec" column="spec"/>
+        <association property="category" javaType="category">
+            <id property="id" column="subCategoryId"/>
+            <result property="categoryId" column="supCategoryId"/>
+        </association>
+    </resultMap>
+    <select id="queryHotProducts" resultMap="product_map">
+        select p.id,
+            p.productId,
+            p.coverPicture,
+            p.title,
+            p.price,
+            p.originPrice,
+            c.id         as subCategoryId,
+            c.categoryId as supCategoryId,
+            round(min(price / originPrice) * 10)
+        from db_a.product p
+            inner join db_a.category c on p.categoryId = c.id
+        where originPrice / price >= 2
+        group by (originPrice / price)
+        order by 4
+    </select>
+</mapper>

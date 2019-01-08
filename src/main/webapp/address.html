@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="address" class="citys">
+    <p>
+        <select name="province"></select>
+        <select name="city"></select>
+        <select name="area"></select>
+        <select name="town"></select>
+    </p>
+</div>
+
+<script src="assets/scripts/jquery.min.js"></script>
+<script src="assets/scripts/jquery.cities.js"></script>
+<script>
+    var $town = $('#address select[name="town"]');
+    var townFormat = function(info){
+        $town.hide().empty();
+        if(info['code']%1e4&&info['code']<7e5){	//是否为“区”且不是港澳台地区
+            $.ajax({
+                url:'assets/data/town/'+info['code']+'.json',
+                dataType:'json',
+                success:function(town){
+                    $town.show();
+                    for(i in town){
+                        $town.append('<option value="'+i+'">'+town[i]+'</option>');
+                    }
+                }
+            });
+        }
+    };
+    $('#address').citys({
+        province:'福建',
+        city:'厦门',
+        area:'思明',
+        onChange:function(info){
+            townFormat(info);
+        }
+    },function(api){
+        var info = api.getInfo();
+        townFormat(info);
+    });
+</script>
+</body>
+</html>

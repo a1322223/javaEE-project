@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="category">
+    <insert id="create" parameterType="category" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.category (title, `desc`, createTime, updateTime, status, categoryId)
+        VALUES (#{title}, #{desc}, now(), NULL, #{status}, #{categoryId})
+    </insert>
+    <delete id="remove">
+        DELETE
+        FROM db_a.category
+        WHERE category.id = #{id}
+    </delete>
+    <update id="modify">
+        UPDATE db_a.category
+        SET title      = #{title},
+            `desc`     = #{desc},
+            updateTime = now(),
+            status     = #{status},
+            categoryId   = #{categoryId}
+        WHERE category.id = #{id}
+    </update>
+    <select id="queryAll" resultType="category">
+        SELECT *
+        FROM db_a.category
+        ORDER BY id
+    </select>
+    <select id="queryById" resultType="category">
+        SELECT *
+        FROM db_a.category
+        WHERE category.id = #{id}
+    </select>
+    <select id="queryFirstCategories" resultType="category">
+        select *
+        from db_a.category
+        where categoryId is null;
+    </select>
+
+    <!--<resultMap id="queryCategoryTree_map" type="category">-->
+        <!--<id property="id" column="id"/>-->
+        <!--<result property="title" column="title"/>-->
+        <!--<collection property="categories" ofType="category">-->
+            <!--<id property="id" column="subId"/>-->
+            <!--<result property="title" column="subTitle"/>-->
+        <!--</collection>-->
+    <!--</resultMap>-->
+    <!--<select id="queryCategoryTree" resultMap="queryCategoryTree_map">-->
+        <!--select sup.id, sup.title,sub.id as subId, sub.title as subTitle-->
+        <!--from db_a.category sup left outer join db_a.category sub-->
+        <!--on sup.id = sub.categoryId-->
+        <!--where sup.categoryId is null;-->
+    <!--</select>-->
+    <resultMap id="queryCategoryTree_map" type="category">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <collection property="categories" ofType="category">
+            <id property="id" column="subId"/>
+            <result property="title" column="subTitle"/>
+            <result property="desc" column="desc"/>
+            <result property="icon" column="icon"/>
+        </collection>
+    </resultMap>
+    <select id="queryCategoryTree" parameterType="category" resultMap="queryCategoryTree_map">
+        select sup.id, sup.title, sub.id as subId, sub.title as subTitle, sub.desc, sub.icon
+        from db_a.category sup
+        left outer join db_a.category sub on sup.id = sub.categoryId
+        where sup.categoryId is null
+        <if test="categoryId != null">
+            and sup.id = #{categoryId}
+        </if>
+        order by sup.id
+    </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+    <resultMap id="queryUserByEmail_map" type="model.User">
+        <id property="id" column="userId"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <association property="userInfo" javaType="model.UserInfo">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="avatar" column="avatar"/>
+            <result property="mobile" column="mobile"/>
+            <result property="createTime" column="createTime"/>
+            <result property="updateTime" column="updateTime"/>
+            <result property="updateIp" column="updateIp"/>
+            <result property="userId" column="userId"/>
+        </association>
+    </resultMap>
+    <select id="queryUserByEmail" parameterType="string" resultMap="queryUserByEmail_map">
+        select
+            u.id as userId,
+            u.email,
+            u.password,
+            ui.*
+        from db_a.user u inner join db_a.user_info ui
+                on u.id = ui.userId
+        where email = #{email}
+    </select>
+    <insert id="create" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into db_a.user
+            value (null, #{email}, #{password})
+    </insert>
+    <update id="resetPassword" parameterType="user">
+        update db_a.user
+        set password = #{password}
+        where id = #{id}
+    </update>
+    <select id="queryUserById" parameterType="int" resultType="user">
+        select *
+        from db_a.user
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="address">
+    <insert id="create" parameterType="address" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.address (
+            province,
+            city,
+            area,
+            town,
+            detail,
+            name,
+            mobile,
+            status,
+            userId
+        )
+        VALUES (
+            #{province},
+            #{city},
+            #{area},
+            #{town},
+            #{detail},
+            #{name},
+            #{mobile},
+            #{status},
+            #{userId}
+        )
+    </insert>
+    <delete id="remove">
+        DELETE FROM db_a.address
+        WHERE address.id = #{id}
+    </delete>
+    <update id="modify">
+        UPDATE db_a.address
+        SET
+            province = #{province},
+            city     = #{city},
+            area     = #{area},
+            town     = #{town},
+            detail   = #{detail},
+            name     = #{name},
+            mobile   = #{mobile},
+            status   = #{status}
+        WHERE address.id = #{id}
+    </update>
+    <select id="queryAll" parameterType="int" resultType="address">
+        SELECT *
+        FROM db_a.address
+        where userId = #{userId}
+        ORDER BY id
+    </select>
+    <select id="queryById" resultType="address">
+        SELECT *
+        FROM db_a.address
+        WHERE address.id = #{id}
+    </select>
+    <update id="setDefaultAddress" parameterType="int">
+        update db_a.address
+        set status = 1
+        where id = #{id}
+    </update>
+    <update id="unsetDefaultAddress" parameterType="int">
+        update db_a.address
+        set status = 0
+        where id != #{id}
+    </update>
+    <select id="queryDefaultAddress" resultType="address" parameterType="int">
+        select * from db_a.address
+        where userId = #{userId} and status = 1
+    </select>
+    <select id="queryFirstAddress" resultType="address" parameterType="int">
+        select * from db_a.address
+        where userId = #{userId}
+        limit 1 offset 0
+    </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userInfo">
+    <insert id="create" parameterType="model.UserInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into db_a.user_info (createTime, userId)
+            value (#{createTime}, #{userId})
+    </insert>
+    <update id="signInUpdate" parameterType="userInfo">
+        update db_a.user_info
+        set updateTime = #{updateTime},
+            updateIp   = #{updateIp}
+        where id = #{id}
+    </update>
+    <update id="modifyToken" parameterType="userInfo">
+        update db_a.user_info
+        set token     = #{token},
+            tokenTime = #{tokenTime}
+        where userId = #{userId}
+    </update>
+    <select id="queryUserInfoByUserId" parameterType="int" resultType="userInfo">
+        select *
+        from db_a.user_info
+        where userId = #{userId}
+    </select>
+</mapper>
