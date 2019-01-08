@@ -106,12 +106,49 @@
         .avatar{
             height: 20px;
         }
-
+        #carousel img{
+            margin: auto;
+            margin-top: 80px;
+        }
     </style>
 </head>
 <body>
 <nav id="nav" class="index navbar navbar-inverse navbar-fixed-top"></nav>
-<header class="index jumbotron"></header>
+<div id="carousel" >
+    <div id="myCarousel" class="carousel slide">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <a href="http://localhost:8080/category.jsp?supId=1005000&subId=1008002 "><img src="avatar/1.jpg" alt="First slide"></a>
+            </div>
+            <div class="item">
+                <a href="http://localhost:8080/category.jsp?supId=1008000&subId=0"><img src="avatar/2.jpg" alt="Second slide"></a>
+            </div>
+            <div class="item">
+                <a href="http://localhost:8080/category.jsp?supId=1043000&subId=1022000"><img src="avatar/3.jpg" alt="Third slide"></a>
+            </div>
+            <div class="item">
+                <a href="http://localhost:8080/category.jsp?supId=1005002&subId=1036003"><img src="avatar/4.jpg" alt="fourth slide"></a>
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
 <main class="container-fluid">
     <%--<main class="container-fluid" style="background: #f4f0ea;">--%>
     <%--<div class="cate-product-wrapper row container">--%>

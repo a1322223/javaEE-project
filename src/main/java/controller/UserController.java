@@ -106,7 +106,7 @@ public class UserController extends BaseController {
     @RequestMapping("resetPassword")
     private String resetPassword() {
         int id = (int) session.getAttribute("id");
-        User user = userService.queryOne("queryUserById",id);
+        User user = userService.queryOne("queryUserById", id);
         String password = request.getParameter("password");
         StrongPasswordEncryptor strongPasswordEncryptor = new StrongPasswordEncryptor();
         user.setPassword(strongPasswordEncryptor.encryptPassword(password));
@@ -114,11 +114,10 @@ public class UserController extends BaseController {
         return "redirect:/sign-in.jsp";
     }
 
-
     @RequestMapping("signUp")
     public String signUp(User user) {
         if (userService.signUp(user)) {
-            return "redirect:/index.jsp";
+            return "redirect:/sign-in.jsp";
         }
         request.setAttribute("message", "Email existed.");
         return "/sign-up.jsp";
@@ -130,10 +129,10 @@ public class UserController extends BaseController {
         if (user != null) {
             session.setAttribute("user", user);
             Integer cartNumber = (Integer) cartService.query("queryCartNumber", user.getId());
-            if(cartNumber!=null){
+            if (cartNumber != null) {
                 session.setAttribute("cartNumber", cartNumber);
-            }else {
-                session.setAttribute("cartNumber",0);
+            } else {
+                session.setAttribute("cartNumber", 0);
             }
             return "redirect:/index.jsp";
         }

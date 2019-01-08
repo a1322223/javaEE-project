@@ -29,6 +29,7 @@
         <url-pattern>*.html</url-pattern>
         <url-pattern>/avatar/*</url-pattern>
         <url-pattern>/favicon.ico</url-pattern>
+        <url-pattern>/pictures</url-pattern>
     </servlet-mapping>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
