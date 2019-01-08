@@ -7,9 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <title>类别</title>
+    <%--<link rel="stylesheet" type="text/css" href="extract/bootstrap3/css/bootstrap.min.css"/>--%>
     <style>
         @import "${ctx}/assets/bootstrap/css/bootstrap.css";
         @import "${ctx}/assets/styles/global.css";
+
 
         section {
             margin-bottom: 30px;
@@ -109,88 +111,78 @@
 <body>
 <nav id="nav" class="navbar navbar-inverse navbar-fixed-top"></nav>
 <header class="jumbotron"></header>
+
 <main class="container">
     <ul class="breadcrumb cate-product-wrapper row container">
         <li>排序:</li>
         <li><a role="button" id="sortDefault" href="category.jsp?supId=${param.supId}&subId=${param.subId}">默认</a></li>
-        <li><a role="button" id="sortBy" href="category_sort.jsp?supId=${param.supId}&subId=${param.subId}">价格</a></li>
+        <li><a role="button" id="sortBy" onclick="changeSort()">价格 ↑</a></li>
         <!-- <li class="active">十一月</li> -->
     </ul>
 </main>
-
 <main class="container-fluid">
-    <%--<div class="cate-product-wrapper row container">--%>
-    <%--<div class="cate-bar col-md-12">--%>
-    <%--<h1>居家</h1>--%>
-    <%--<p>asdf...</p>--%>
-    <%--</div>--%>
-    <%--<section class="col-md-3">--%>
-    <%--<article--%>
-    <%--style="background-image: url(http://localhost:81/static/slide_pictures/1005000/1008002/1522005/67002f942a34488893335529fe9c926e.png);">--%>
-    <%--</article>--%>
-    <%--<img id="play" src="${ctx}/assets/images/play.svg">--%>
-    <%--<p class="t" title="韩国制造 14k金除氯增压花洒">韩国制造 14k金除氯增压花洒</p>--%>
-    <%--<p class="p"><b>239</b><s>299</s></p>--%>
-    <%--<hr>--%>
-    <%--<p class="d">asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf...</p>--%>
-    <%--</section>--%>
-    <%--</div>--%>
+    <br>
+    <div id="data">
+
+    </div>
 </main>
 <footer class="jumbotron"></footer>
+
 <script src="${ctx}/assets/scripts/jquery.min.js"></script>
 <script src="${ctx}/assets/bootstrap/js/bootstrap.js"></script>
 <script src="${ctx}/assets/scripts/global.js"></script>
+
+<%--<script src="extract/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>--%>
 <script>
+    sort = -1;
+    productArraySortList = []
+
     $(function () {
         supId = ${param.supId};
         subId = ${param.subId};
+        productArrayList = []
         $.ajax({
+            // url: '/market_test1/temp/test1.json',
             url: '${ctx}/category/list/' + supId,
-            type: 'post',
+            type: 'get',
             dataType: 'json',
             success: function (data) {
+
+                console.log(data)
                 var supId = data.id;
-                $('title').text(data.title);
+                // $('title').text(data.title);
+                $('#data').append('<div id="productList" class="cate-product-wrapper row container">');
+
                 $.each(data.categories, function (index, c) {
-                    $('main').append('<div id="wrapper-' + c.id + '" class="cate-product-wrapper row container">');
-
-                    // 1. cate
-                    var cateArr = [
-                        '<div id="' + c.id + '" class="cate-bar col-md-12"><h1></h1><p></p>'
-                    ];
-
-                    $('#wrapper-' + c.id).append(cateArr.join(''));
-
-                    var cateBar = $('#' + c.id);
-                    cateBar.find('h1').text(c.title).attr('id', c.id);
-                    cateBar.find('p').text(c.desc);
-
                     // 2. product
                     $.each(c.products, function (index, p) {
-                        var productArr = [
-                            '<section id="' + p.id + '" class="col-md-3"><article><img class="video" src="${ctx}/assets/images/video.svg"></article>',
-                            '<p class="t"></p><p class="p"><b></b><s></s></p><hr><p class="d"></p></section>'
-                        ];
-
-                        $('#wrapper-' + c.id).append(productArr.join(''));
-
-                        var section = $('#' + p.id);
-                        section.find('article').css('background-image', 'url(${img}' + 'cover_picture/' + supId + '/' + c.id + '/' + p.productId + '/' + p.coverPicture + ')');
-                        section.find('p.t').attr('title', p.title);
-                        section.find('p.t').text(p.title);
-                        section.find('p.p b').text(p.price);
-                        section.find('p.p s').text(p.originPrice);
-                        section.find('p.d').text(p.desc);
-                        if (p.mp4 === null && p.webm === null) {
-                            section.find('img').hide();
-                        }
+                        p.coverPicture = supId + '/' + c.id + '/' + p.productId + '/' + p.coverPicture
+                        productArrayList.push(p)
                     })
                 });
+
+                productArraySortList = [];
+
+                for (var i = productArrayList.length-1; i >0 ;i--){
+                    index = i;
+                    for (var j =productArrayList.length -2; j >= 0; j--) {
+                        if(productArrayList[j]["price"]<productArrayList[index]["price"]){
+                            index = j
+                        }
+                    }
+                    productArraySortList.push(productArrayList[index]);
+
+                    productArrayList.splice(index, 1);
+                }
+
+                console.log('after', productArraySortList);
+                htmlContent()
             },
-            complete: function () {
+            complete: function (data) {
+                // console.log(data)
                 if (subId !== 0) {
                     $('html, body').animate({
-                        scrollTop: $('#' + ${param.subId}).offset() - 80
+                       scrollTop: $('#' + ${param.subId}).offset() - 80
                     }, 0);
                 }
             }
@@ -203,7 +195,51 @@
                 '_blank'
             );
         });
+
     });
+
+    function changeSort(){
+        sort = - sort;
+        htmlContent();
+    }
+
+    function htmlContent(){
+        // alert("list : "+productArraySortList.length+", sort:"+sort)
+        $('#productList').html("");
+        l = productArraySortList;
+        if(sort >0 ){
+            $("#sortBy").html("价格 ↓")
+            for (i=l.length - 1; i >= 0 ; i--) {
+                addHtml(l[i])
+            }
+        }else{
+            $("#sortBy").html("价格 ↑")
+            for (i=0;  i< l.length; i++) {
+                addHtml(l[i])
+            }
+        }
+    }
+
+
+    function addHtml(p){
+        var productArr = [
+            '<section id="' + p.id + '" class="col-md-3"><article><img class="video" src="http://10.2.29.119:81/static/assets/images/video.svg"></article>',
+            '<p class="t"></p><p class="p"><b></b><s></s></p><hr><p class="d"></p></section>'
+        ];
+
+        $('#productList').append(productArr.join(''));
+
+        var section = $('#' + p.id);
+        section.find('article').css('background-image', 'url(http://10.2.29.119:81/static/' + 'cover_picture/' + p.coverPicture + ')');
+        section.find('p.t').attr('title', p.title);
+        section.find('p.t').text(p.title);
+        section.find('p.p b').text(p.price);
+        section.find('p.p s').text(p.originPrice);
+        section.find('p.d').text(p.desc);
+        if (p.mp4 === null && p.webm === null) {
+            section.find('img').hide();
+        }
+    }
 </script>
 </body>
 </html>
