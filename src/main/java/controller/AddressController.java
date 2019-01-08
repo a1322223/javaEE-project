@@ -20,12 +20,15 @@ public class AddressController extends BaseController {
     }
 
     @RequestMapping("create")
-    private String create(Address address) {
+    private String create(Address address,@RequestParam("isOrder") int isOrder) {
         User user = (User) session.getAttribute("user");
         address.setUserId(user.getId());
         addressService.create(address);
         if (address.getStatus() == 1) {
             unsetDefaultAddress(address.getId());
+        }
+        if(isOrder==1){
+            return "redirect:/order-confirm.jsp";
         }
         return "redirect:/address/queryAll";
     }
@@ -51,11 +54,14 @@ public class AddressController extends BaseController {
         return "redirect:/address/queryAll";
     }
 
-    @RequestMapping("modify")
-    private String modify(Address address) {
+    @RequestMapping("modify/{isOrder}")
+    private String modify(Address address, @PathVariable("isOrder") int isOrder) {
         addressService.modify(address);
         if (address.getStatus() == 1) {
             unsetDefaultAddress(address.getId());
+        }
+        if(isOrder==1){
+            return "redirect:/order-confirm.jsp";
         }
         return "redirect:/address/queryAll";
     }
@@ -67,9 +73,9 @@ public class AddressController extends BaseController {
         return "redirect:/portal/address/list.jsp";
     }
 
-    @RequestMapping("queryById/{id}")
-    private String queryById(@PathVariable("id") Integer id) {
+    @RequestMapping("queryById/{id}/{isOrder}")
+    private String queryById(@PathVariable("id") Integer id, @PathVariable("isOrder") Integer isOrder) {
         session.setAttribute("address", addressService.queryById(id));
-        return "redirect:/portal/address/edit.jsp";
+        return "redirect:/portal/address/edit.jsp?isOrder="+isOrder;
     }
 }
