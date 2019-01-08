@@ -196,7 +196,7 @@
             <tr>
                 <th width="10%"><input type="checkbox" class="all" style="text-align: left;" checked="checked">
                     已选<span
-                            id="selected-number"></span></th>
+                            id="selected-number" value="${product.cart.number}"></span></th>
                 <th width="15%"><input id="submit" type="submit" class="text-warning" value="批量删除"></th>
                 <th width="35%" style="line-height: 30px;">
                     <div>商品合计：<span id="total-price"><fmt:formatNumber value="${totalPrice}" type="currency"/></span>
@@ -260,6 +260,12 @@
             $('#pay').text(getTotalPrice() - getTotalDiscount());
         });
 
+        $('input:checkbox').on('click', function () {
+            if (!$(this).prop('checked')) {
+                $('.all').prop('checked', false);
+            }
+        });
+
         $('input:checkbox[name=product]').on('click', function () {
             $('#selected-number').text('（' + getNumber() + '）');
             $('#total-price').text(getTotalPrice());
@@ -282,7 +288,7 @@
             var totalPrice = 0;
             $.each($('.data-checkbox'), function (index, item) {
                 if ($(this).prop('checked')) {
-                    totalPrice += parseInt($(this).attr('data-originPrice')) * parseInt($(this).attr('data-number'));
+                    totalPrice += parseFloat($(this).attr('data-originPrice')) * parseInt($(this).attr('data-number'));
                 }
             });
             return totalPrice;
@@ -292,7 +298,7 @@
             var totalDiscount = 0;
             $.each($('.data-checkbox'), function (index, item) {
                 if ($(this).prop('checked')) {
-                    totalDiscount += (parseInt($(this).attr('data-originPrice')) - parseInt($(this).attr('data-price'))) * parseInt($(this).attr('data-number'));
+                    totalDiscount += (parseFloat($(this).attr('data-originPrice')) - parseFloat($(this).attr('data-price'))) * parseInt($(this).attr('data-number'));
                 }
             });
             return totalDiscount;
@@ -328,6 +334,7 @@
                     if (data.result) {
                         var checkbox = addObject.parent().siblings('.td-checkbox').find('.data-checkbox');
                         checkbox.attr('data-number', parseInt(checkbox.attr('data-number')) + 1);
+                        $('#selected-number').text('('+getNumber()+')');
                         $('#total-price').text(getTotalPrice());
                         $('#total-discount').text(getTotalDiscount());
                         $('#pay').text(getTotalPrice() - getTotalDiscount());
@@ -356,6 +363,7 @@
                     if (data.result) {
                         var checkbox = subObject.parent().siblings('.td-checkbox').find('.data-checkbox');
                         checkbox.attr('data-number', parseInt(checkbox.attr('data-number')) - 1);
+                        $('#selected-number').text('('+getNumber()+')');
                         $('#total-price').text(getTotalPrice());
                         $('#total-discount').text(getTotalDiscount());
                         $('#pay').text(getTotalPrice() - getTotalDiscount());
