@@ -9,10 +9,7 @@
     <style>
         @import "${ctx}/assets/bootstrap/css/bootstrap.css";
         @import "${ctx}/assets/styles/global.css";
-
-        #avatar {
-            height: 20px;
-        }
+        @import "${ctx}/assets/styles/portal.css";
     </style>
     <script>
         function del() {
@@ -25,7 +22,13 @@
 <header class=" address jumbotron"></header>
 <main class="container">
     <section class="col-md-2">
-        <article>left...</article>
+        <hr/>
+        <h3>全部功能</h3><hr/>
+        <ul>
+            <li class="sticker"><a href="../userinfo.jsp">信息管理</a></li>
+            <li class="sticker"><a href="list.jsp">地址管理</a></li>
+            <li class="sticker"><a href="../order-confirm.jsp">我的订单</a></li>
+        </ul>
     </section>
     <section class="col-md-10">
         <article>
@@ -35,9 +38,7 @@
                     <a class="btn btn-success btn-sm" href="add.jsp">新建地址</a>
                 </c:when>
                 <c:otherwise>
-                    <a class="btn btn-success btn-sm" href="add.jsp?isOrder=0">添加地址</a>
-                    <hr/>
-                    <h1>地址列表</h1>
+                    <h2>地址列表</h2>
                     <table class="table table-striped table-hover table-bordered table-responsive">
                         <tr>
                             <th>序号</th>
@@ -72,6 +73,11 @@
                                 </td>
                             </tr>
                         </c:forEach>
+                        <tr>
+                            <td colspan="7" id="button">
+                                <a class="btn btn-success btn-sm" href="add.jsp">添加地址</a>
+                            </td>
+                        </tr>
                     </table>
                 </c:otherwise>
             </c:choose>
