@@ -26,6 +26,7 @@
     .nav ul li:first-of-type a {
         width: 100%;
         text-align: center;
+        color: #2aabd2;
     }
 
     .nav ul li img {
@@ -35,6 +36,11 @@
     }
     .avatar{
         height: 20px;
+    }
+
+    .navbar-inverse {
+        background-color: #d9edf7;
+        border-color: #fdf8f8;
     }
 </style>
 <div class="container-fluid">

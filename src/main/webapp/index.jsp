@@ -43,7 +43,7 @@
         }
 
         p.p s {
-            color: #999;
+            color: white;
             text-decoration: line-through;
         }
 
@@ -87,13 +87,15 @@
         }
 
         .breadcrumb {
-            margin: 0;
+            margin: 10px;
             padding: 0;
             background: transparent;
+            font-weight: bolder;
         }
 
         .breadcrumb ol {
             margin: 14px 0;
+
         }
 
         .video {
@@ -110,6 +112,18 @@
             margin: auto;
             margin-top: 80px;
         }
+        .navbar-inverse {
+            background-color: #d9edf7;
+            border-color: #fdf8f8;
+        }
+        #footer2 {
+            padding-top: 30px;
+            height: 120px;
+            background-color: #d9edf7;
+            color: #fff;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -241,7 +255,7 @@
         });
 
         $(window).on('load', function () {
-            $('.cate-product-wrapper:even').css('background', '#f4f0ea');
+            $('.cate-product-wrapper:even').css('background', '#ffffff');
         });
     });
 </script>
