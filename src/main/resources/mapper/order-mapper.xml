@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order">
+    <insert id="create" parameterType="order" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.`order` (
+            orderProducts,
+            createTime,
+            finishTime,
+            totalPrice,
+            status,
+            address,
+            userId
+        )
+        VALUES (
+            #{orderProducts},
+            now(),
+            #{finishTime},
+            #{totalPrice},
+            #{status},
+            #{address},
+            #{userId}
+        )
+    </insert>
+    <delete id="remove">
+        DELETE
+        FROM db_a.`order`
+        WHERE `order`.id = #{id}
+    </delete>
+    <select id="queryById" resultType="order" parameterType="int">
+        select * from db_a.`order`
+        where `order`.userId = #{id}
+    </select>
+    <update id="changeStatus" parameterType="int">
+        update db_a.`order`
+                set status=1
+        where id = #{id}
+    </update>
+</mapper>
