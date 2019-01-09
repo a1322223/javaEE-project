@@ -22,12 +22,11 @@
 <header class=" address jumbotron"></header>
 <main class="container">
     <section class="col-md-2">
-        <hr/>
-        <h3>全部功能</h3><hr/>
+        <hr/><h3>全部功能</h3><hr/>
         <ul>
             <li class="sticker"><a href="../userinfo.jsp">信息管理</a></li>
             <li class="sticker"><a href="list.jsp">地址管理</a></li>
-            <li class="sticker"><a href="../order-confirm.jsp">我的订单</a></li>
+            <li class="sticker"><a href="../order/order.jsp">我的订单</a></li>
         </ul>
     </section>
     <section class="col-md-10">
