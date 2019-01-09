@@ -118,7 +118,7 @@
     </ul>
 </main>
 
-<main class="container-fluid">
+<main id="mainContain" class="container-fluid">
     <%--<div class="cate-product-wrapper row container">--%>
     <%--<div class="cate-bar col-md-12">--%>
     <%--<h1>居家</h1>--%>

@@ -115,22 +115,11 @@
 <body>
 <nav id="nav" class="index navbar navbar-inverse navbar-fixed-top"></nav>
 
+<c:if test="${not empty sessionScope.notFoundMessage}">
+<div id="errorInfo">${sessionScope.notFoundMessage}</div>
+</c:if>
 
-<main class="container-fluid" style="background: #f4f0ea; padding: 100px;">
-    <div id="errorInfo" hidden="hidden"><c:if test="${not empty sessionScope.notFoundMessage}">${sessionScope.notFoundMessage}</c:if></div>
-
-    <div class="container" id="notFound" hidden="hidden">
-        <div class="jumbotron">
-            <div class="container row ">
-                <div class="col-md-offset-1 col-md-3"><img src="${ctx}/avatar/cry1.png" class="col-md-12 center-block" ></div>
-                <div class="col-sm-6 center-block" >
-                    <p>这位客官，臣妾搜不到啊～</p>
-                    <p id="haveOther">为客官推荐以下物品⬇️</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<main class="container-fluid" style="background: #f4f0ea;">
     <div class="cate-product-wrapper row container" id="root">
         <%--<section class="col-md-3" v-for="(item, index) of productList" :key="index" :id="item.id">--%>
             <%--<article :style="'background-image:url('+item.background+')'">--%>
@@ -182,16 +171,4 @@
             '_blank'
         );
     });
-
-    //wgh0807 - errInfo rebuild
-    // alert($("#errorInfo").text().length)
-    console.log($("#errorInfo").text().length);
-    if ($("#errorInfo").text().length != 0) {
-        $("#notFound").show();
-        if ($("#root")){
-            $("#haveOther").hide();
-        }
-    }
-    $("#errorInfo").hide();
-//todo: 未搜索到结果且无推荐时，有待完善
 </script>
