@@ -107,7 +107,10 @@ public class CartController extends BaseController {
         User user = (User) session.getAttribute("user");
         int cartNumber = 0;
         if (user != null) {
-            cartNumber = (int) cartService.query("queryCartNumber", user.getId());
+            Integer number = (Integer) cartService.query("queryCartNumber", user.getId());
+            if (number != null) {
+                cartNumber = number;
+            }
         }
         Map<String, Object> map = new HashMap<>();
         map.put("cartNumber", cartNumber);
@@ -125,6 +128,7 @@ public class CartController extends BaseController {
         }
         return "redirect:/cart/queryAll";
     }
+
     private void removeByProductId(int productId) {
         cartService.remove(productId);
     }
@@ -133,17 +137,17 @@ public class CartController extends BaseController {
     @ResponseBody
     private Map<String, Boolean> orderConfirm(@RequestParam("ids[]") List<Integer> ids) {
         User user = (User) session.getAttribute("user");
-        Map<String,Object> paraMap = new HashMap<>();
-        paraMap.put("id",user.getId());
-        paraMap.put("list",ids);
+        Map<String, Object> paraMap = new HashMap<>();
+        paraMap.put("id", user.getId());
+        paraMap.put("list", ids);
         List<Cart> list = cartService.queryList("orderConfirm", paraMap);
-        session.setAttribute("list",list);
+        session.setAttribute("list", list);
         System.out.println(list);
-        if(addressService.queryOne("queryDefaultAddress", user.getId())!=null){
-            Address address = addressService.queryOne("queryDefaultAddress", user.getId()) ;
+        if (addressService.queryOne("queryDefaultAddress", user.getId()) != null) {
+            Address address = addressService.queryOne("queryDefaultAddress", user.getId());
             session.setAttribute("address", address);
-        }else {
-            Address address = addressService.queryOne("queryFirstAddress", user.getId()) ;
+        } else {
+            Address address = addressService.queryOne("queryFirstAddress", user.getId());
             session.setAttribute("address", address);
         }
 
@@ -169,4 +173,5 @@ public class CartController extends BaseController {
         map.put("result", true);
         return map;
     }
+
 }
