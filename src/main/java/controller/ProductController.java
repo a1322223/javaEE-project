@@ -1,7 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import service.CategoryService;
 import service.ProductService;
-import util.Constants;
 
 import java.util.List;
 
@@ -102,48 +99,6 @@ public class ProductController extends BaseController {
     @RequestMapping("queryAllPages")
     private String queryAllPages() {
         return queryAll(1);
-    }
-
-
-    //李青松 --- 模糊查询
-    @RequestMapping("find")
-    private String findByLikeName(@RequestParam String likeName){
-        String likeNameAdd = "%"+likeName+"%";
-        List<Product> list = productService.queryList("findByLikeName", likeNameAdd);
-        int i = 1;
-        String notFoundMessage = "";
-        while(list.size()==0){
-            notFoundMessage = "抱歉，没有查到您要的产品，为您推荐以下产品:";
-            likeNameAdd = "%"+likeName.substring(i++)+"%";
-            System.out.println(likeName);
-            list = productService.queryList("findByLikeName", likeNameAdd);
-            if(i>=likeName.length() && list.size()==0){
-                notFoundMessage = "抱歉，没有查到您要的信息！";
-                break;
-            }
-        }
-        for (Product product: list
-                ) {
-            product.setDetailPictures(null);
-            product.setSlidePictures(null);
-            String backImage = Constants.NGINX_HOST+"/cover_picture/"+
-                    product.getCategory().getCategoryId()+ "/" +
-                    product.getCategoryId()+"/" +
-                    product.getProductId() + "/"+
-                    product.getCoverPicture();
-            product.setCoverPictureUrl(backImage);
-
-        }
-        String productList = null;
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            productList = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        session.setAttribute("notFoundMessage", notFoundMessage);
-        session.setAttribute("productList", productList);
-        return "redirect:/checkPage.jsp";
     }
 
 }

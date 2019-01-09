@@ -119,7 +119,7 @@ public class UserController extends BaseController {
         if (userService.signUp(user)) {
             return "redirect:/sign-in.jsp";
         }
-        request.setAttribute("message", "Email existed.");
+        request.setAttribute("message", "邮箱已经存在！");
         return "/sign-up.jsp";
     }
 
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
             }
             return "redirect:/index.jsp";
         }
-        request.setAttribute("message", "Invalid Email or password.");
+        request.setAttribute("message", "邮箱或者密码错误，请重新输入！");
         return "/sign-in.jsp";
     }
 

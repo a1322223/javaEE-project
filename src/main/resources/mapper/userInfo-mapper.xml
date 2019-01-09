@@ -13,6 +13,13 @@
             updateIp   = #{updateIp}
         where id = #{id}
     </update>
+    <update id="modify" parameterType="userInfo">
+        update db_a.user_info
+        set username = #{username},
+            avatar = #{avatar},
+            mobile = #{mobile}
+        where userId = #{userId}
+    </update>
     <update id="modifyToken" parameterType="userInfo">
         update db_a.user_info
         set token     = #{token},

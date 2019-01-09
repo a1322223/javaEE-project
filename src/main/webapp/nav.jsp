@@ -26,7 +26,6 @@
     .nav ul li:first-of-type a {
         width: 100%;
         text-align: center;
-        color: #2aabd2;
     }
 
     .nav ul li img {
@@ -36,11 +35,6 @@
     }
     .avatar{
         height: 20px;
-    }
-
-    .navbar-inverse {
-        background-color: #d9edf7;
-        border-color: #fdf8f8;
     }
 </style>
 <div class="container-fluid">
@@ -66,9 +60,9 @@
             <%--</li>--%>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left" action="/product/find">
+            <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="likeName" placeholder="女式运动上装">
+                    <input type="text" class="form-control" placeholder="女式运动上装">
                 </div>
                 <button type="submit" class="btn btn-default">搜！</button>
             </form>
@@ -86,7 +80,7 @@
                 </li>
                 <li><a class="pop" href="#" data-toggle="popover" data-container="body" data-trigger="hover"
                        data-placement="bottom" title="Header..."
-                       data-content="<p><a href=&quot;/address/queryAll&quot;>个人信息</a></p><p><a href=&quot;/user/signOut&quot;>退出</a></p>">
+                       data-content="<p><a href=&quot;/address/queryAll&quot;>地址管理</a></p><p><a href=&quot;/user/signOut&quot;>退出</a></p>">
                     <img id="avatar" class="avatar img-circle"
                          src="${ctx}/avatar/${sessionScope.user.userInfo.avatar}"> ${sessionScope.user.email}</a></li>
             </c:if>

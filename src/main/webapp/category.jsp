@@ -104,6 +104,9 @@
             cursor: pointer;
             width: 60px;
         }
+        [v-cloak] {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -141,6 +144,15 @@
 <script src="${ctx}/assets/bootstrap/js/bootstrap.js"></script>
 <script src="${ctx}/assets/scripts/global.js"></script>
 <script>
+    window.onload=function(){
+        tagname=location.href.split("tagname=")[1]//以锚点标识分割当前页的地址
+        a=document.createElement("a");
+        a.href="#"+tagname;
+        document.body.appendChild(a);
+        // console.log(a)
+        a.click();
+    }
+
     $(function () {
         supId = ${param.supId};
         subId = ${param.subId};
@@ -160,9 +172,9 @@
                     ];
 
                     $('#wrapper-' + c.id).append(cateArr.join(''));
-
+                    // console.log(c.id)
                     var cateBar = $('#' + c.id);
-                    cateBar.find('h1').text(c.title).attr('id', c.id);
+                    cateBar.find('h1').text(c.title);
                     cateBar.find('p').text(c.desc);
 
                     // 2. product
@@ -190,7 +202,7 @@
             complete: function () {
                 if (subId !== 0) {
                     $('html, body').animate({
-                        scrollTop: $('#' + ${param.subId}).offset() - 80
+                        scrollTop: $('#' + subId).offset().top - 80
                     }, 0);
                 }
             }

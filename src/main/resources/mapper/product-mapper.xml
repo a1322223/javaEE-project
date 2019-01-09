@@ -110,7 +110,6 @@
         <result property="webm" column="webm"/>
         <result property="mp4" column="mp4"/>
         <result property="spec" column="spec"/>
-        <result property="categoryId" column="categoryId"/>
         <association property="category" javaType="category">
             <id property="id" column="subCategoryId"/>
             <result property="categoryId" column="supCategoryId"/>
@@ -131,12 +130,5 @@
         where originPrice / price >= 2
         group by (originPrice / price)
         order by 4
-    </select>
-
-    <select id="findByLikeName" parameterType="string" resultMap="product_map">
-        SELECT p.*, c.id as subCategoryId, c.categoryId as supCategoryId
-        FROM db_a.product p
-        inner join db_a.category c on p.categoryId = c.id
-        WHERE p.title LIKE #{likeName}
     </select>
 </mapper>
