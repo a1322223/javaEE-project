@@ -86,7 +86,7 @@
                 </li>
                 <li><a class="pop" href="#" data-toggle="popover" data-container="body" data-trigger="hover"
                        data-placement="bottom" title="Header..."
-                       data-content="<p><a href=&quot;/address/queryAll&quot;>地址管理</a></p><p><a href=&quot;/user/signOut&quot;>退出</a></p>">
+                       data-content="<p><a href=&quot;/address/queryAll&quot;>个人信息</a></p><p><a href=&quot;/user/signOut&quot;>退出</a></p>">
                     <img id="avatar" class="avatar img-circle"
                          src="${ctx}/avatar/${sessionScope.user.userInfo.avatar}"> ${sessionScope.user.email}</a></li>
             </c:if>
