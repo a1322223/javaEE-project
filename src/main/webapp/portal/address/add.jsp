@@ -28,7 +28,7 @@
     <section class="col-md-10">
         <article>
             <h1 class="col-md-6 col-md-offset-2">添加地址</h1>
-            <form action="${ctx}/address/create" method="post">
+            <form action="${ctx}/address/create?isOrder=${param.isOrder}" method="post">
                 <div id="address" class="input-group input-inline col-md-6 col-md-offset-2">
                     <label for="detail">所在地区</label>
                     <select id="province" class="form-control col-sm-3" name="province"></select>

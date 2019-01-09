@@ -60,9 +60,9 @@
             <%--</li>--%>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" action="/product/find">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="女式运动上装">
+                    <input type="text" class="form-control" name="likeName" placeholder="女式运动上装">
                 </div>
                 <button type="submit" class="btn btn-default">搜！</button>
             </form>

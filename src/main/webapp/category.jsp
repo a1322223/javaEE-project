@@ -109,6 +109,15 @@
 <body>
 <nav id="nav" class="navbar navbar-inverse navbar-fixed-top"></nav>
 <header class="jumbotron"></header>
+<main class="container">
+    <ul class="breadcrumb cate-product-wrapper row container">
+        <li>排序:</li>
+        <li><a role="button" id="sortDefault" href="category.jsp?supId=${param.supId}&subId=${param.subId}">默认</a></li>
+        <li><a role="button" id="sortBy" href="category_sort.jsp?supId=${param.supId}&subId=${param.subId}">价格</a></li>
+        <!-- <li class="active">十一月</li> -->
+    </ul>
+</main>
+
 <main class="container-fluid">
     <%--<div class="cate-product-wrapper row container">--%>
     <%--<div class="cate-bar col-md-12">--%>

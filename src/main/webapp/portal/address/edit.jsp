@@ -29,7 +29,7 @@
     <section class="col-md-10">
         <article>
             <h1 class="col-md-6 col-md-offset-2">编辑地址</h1>
-            <form action="${ctx}/address/modify" method="post">
+            <form action="${ctx}/address/modify/${param.isOrder}" method="post">
                 <input type="hidden" name="id" value="${sessionScope.address.id}">
                 <div id="address" class="input-group input-inline col-md-6 col-md-offset-2">
                     <label for="detail">所在地区</label>

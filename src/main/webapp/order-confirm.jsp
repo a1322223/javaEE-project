@@ -110,7 +110,7 @@
                     <c:if test="${sessionScope.address.status eq 1}">
                         默认地址
                     </c:if>
-                    <button type="button" class="button"><a href="${ctx}/address/queryById/${sessionScope.address.id}"
+                    <button type="button" class="button"><a href="${ctx}/address/queryById/${sessionScope.address.id}/1"
                                                             style="color: #000000;font-size: small;text-decoration: none">修改</a>
                     </button>
                     <br>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-md-2 address-right">
                     <p><a href="" style="margin-left: 10px;color: #69c;font-size: small"> 地址切换</a></p>
-                    <button type="button" class="change-address"><a href="${ctx}/portal/address/add.jsp"
+                    <button type="button" class="change-address"><a href="${ctx}/portal/address/add.jsp?isOrder=1"
                                                                     style="color: #000000;font-size: small;text-decoration: none">新建地址</a>
                     </button>
                 </div>

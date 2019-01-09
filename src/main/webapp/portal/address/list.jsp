@@ -35,7 +35,7 @@
                     <a class="btn btn-success btn-sm" href="add.jsp">新建地址</a>
                 </c:when>
                 <c:otherwise>
-                    <a class="btn btn-success btn-sm" href="add.jsp">添加地址</a>
+                    <a class="btn btn-success btn-sm" href="add.jsp?isOrder=0">添加地址</a>
                     <hr/>
                     <h1>地址列表</h1>
                     <table class="table table-striped table-hover table-bordered table-responsive">
@@ -59,7 +59,7 @@
                                         ${address.detail}
                                 </td>
                                 <td>${address.mobile}</td>
-                                <td><a href="${ctx}/address/queryById/${address.id}">编辑</a></td>
+                                <td><a href="${ctx}/address/queryById/${address.id}/0">编辑</a></td>
                                 <td><a class="delete" href="${ctx }/address/remove/${address.id}"
                                        onclick="return del()">删除</a></td>
                                 <td>

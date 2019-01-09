@@ -28,6 +28,7 @@ public class Product implements Serializable {
     private String mp4;
     private String webm;
     private Integer categoryId;
+    private String coverPictureUrl;
 
     private Cart cart;
     private Category category;
