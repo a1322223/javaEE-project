@@ -93,6 +93,14 @@
             line-height: 50px;
             height: 50px;
         }
+        .list-style{
+            width: 500px;
+            height: 100px;
+            border: 1px solid #0f0f0f;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -115,18 +123,40 @@
                     </button>
                     <br>
                     <ul>
-                        <li><span>收货人：</span>${sessionScope.address.name}</li>
-                        <li><span>联系方式：</span>${sessionScope.address.mobile}</li>
+                        <li><span>收货人：</span><span id="consignee">${sessionScope.address.name}</span></li>
+                        <li><span>联系方式：</span><span id="mobilephone">${sessionScope.address.mobile}</span></li>
                         <li>
-                            <span>收货地址：</span>${sessionScope.address.province}${sessionScope.address.city}${sessionScope.address.area}${sessionScope.address.town}${sessionScope.address.detail}
+                            <span>收货地址：</span>
+                            <span id="deliveryAddress">${sessionScope.address.province}${sessionScope.address.city}${sessionScope.address.area}${sessionScope.address.town}${sessionScope.address.detail}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-2 address-right">
-                    <p><a href="" style="margin-left: 10px;color: #69c;font-size: small"> 地址切换</a></p>
+                    <p><a href="" style="margin-left: 10px;color: #69c;font-size: small" data-toggle="modal" data-target="#myModal"> 地址切换</a></p>
                     <button type="button" class="change-address"><a href="${ctx}/portal/address/add.jsp?isOrder=1"
                                                                     style="color: #000000;font-size: small;text-decoration: none">新建地址</a>
                     </button>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">选择地址</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="list">
+
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary change-address change" data-dismiss="modal">提交更改</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
                 </div>
             </th>
         </tr>
@@ -188,12 +218,52 @@
 <script src="assets/scripts/global.js"></script>
 <script>
     $(function () {
+        var addressId = 0;
         $.each($('.picture'), function (index, item) {
             var supId = $(this).attr('data-sup-id');
             var subId = $(this).attr('data-sub-id');
             var productId = $(this).attr('data-product-id');
             var coverPicture = $(this).attr('data-cover-picture');
             $(this).append('<img src="${img}cover_picture/' + supId + '/' + subId + '/' + productId + '/' + coverPicture + '"/>')
+        });
+        $.ajax({
+            url:'${ctx}/address/queryAllList',
+            type:'post',
+            dataType:'json',
+            success:function (data) {
+                $.each(data,function (i,address) {
+                    var id = address.id;
+                    var name = address.name;
+                    var mobile = address.mobile;
+                    var detailAddress = address.province+address.city+address.area+address.town+address.detail;
+                    $('#list').append('<div id="'+id+'" class="list-style changeAddress">' +
+                        '<ul>' +
+                        '<li><span>收货人：</span>' +name+ '</li>' +
+                        '<li><span>联系方式：</span>' +mobile+ '</li>' +
+                        '<li><span>收货地址：</span>' +detailAddress+ '</li>'+
+                        '</ul>' +
+                        '</div>');
+                })
+            }
+        });
+        $(document).on('click', '.changeAddress', function () {
+            addressId = $(this).attr('id');
+            $('#'+addressId).css("background", "");
+            $(this).css("background", "#4444");
+
+
+        });
+        $(document).on('click', '.change', function () {
+            $.ajax({
+                url:'${ctx}/address/queryById/'+addressId,
+                type:'post',
+                dataType:'json',
+                success:function (data) {
+                    $('#consignee').text(data.name);
+                    $('#mobilephone').text(data.mobile);
+                    $('#deliveryAddress').text(data.province+data.city+data.area+data.town+data.detail);
+                }
+            });
         });
     });
 </script>
