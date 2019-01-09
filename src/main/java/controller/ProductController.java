@@ -105,17 +105,19 @@ public class ProductController extends BaseController {
     }
 
 
+    //李青松 --- 模糊查询
     @RequestMapping("find")
     private String findByLikeName(@RequestParam String likeName){
-        likeName = "%"+likeName+"%";
-        List<Product> list = productService.queryList("findByLikeName", likeName);
+        String likeNameAdd = "%"+likeName+"%";
+        List<Product> list = productService.queryList("findByLikeName", likeNameAdd);
         int i = 1;
         String notFoundMessage = "";
         while(list.size()==0){
-            notFoundMessage = "抱歉，没有查到您要的产品，为您推荐以下产品";
-            likeName = likeName.substring(i++);
-            list = productService.queryList("findByLikeName", likeName);
-            if(i<=likeName.length()){
+            notFoundMessage = "抱歉，没有查到您要的产品，为您推荐以下产品:";
+            likeNameAdd = "%"+likeName.substring(i++)+"%";
+            System.out.println(likeName);
+            list = productService.queryList("findByLikeName", likeNameAdd);
+            if(i>=likeName.length() && list.size()==0){
                 notFoundMessage = "抱歉，没有查到您要的信息！";
                 break;
             }
@@ -139,8 +141,6 @@ public class ProductController extends BaseController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println("测试模糊查询productList："+productList);
-        System.out.println("查不到时会有信息:"+notFoundMessage);
         session.setAttribute("notFoundMessage", notFoundMessage);
         session.setAttribute("productList", productList);
         return "redirect:/checkPage.jsp";

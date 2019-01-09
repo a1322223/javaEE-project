@@ -106,14 +106,17 @@
             cursor: pointer;
             width: 60px;
         }
-
+        #errorInfo {
+            padding-top: 60px;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
 <nav id="nav" class="index navbar navbar-inverse navbar-fixed-top"></nav>
 
 <c:if test="${not empty sessionScope.notFoundMessage}">
-alert(${notFoundMessage});
+<div id="errorInfo">${sessionScope.notFoundMessage}</div>
 </c:if>
 
 <main class="container-fluid" style="background: #f4f0ea;">
@@ -146,7 +149,6 @@ alert(${notFoundMessage});
     var jsonObj = JSON.parse(productlist);
     var jsonArray = [];
     var notFoundMessage = '${notFoundMessage}';
-    alert(notFoundMessage);
     for (var i = 0; i < jsonObj.length; i++) {
         jsonArray[i] = jsonObj[i];
     }
