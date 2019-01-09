@@ -139,6 +139,7 @@
             <th width="15%" class="panel">小计</th>
             <th width="20%" class="panel">实付</th>
         </tr>
+
         <c:forEach var="product" items="${sessionScope.list}">
             <tr class="tr-data">
                 <td width="15%" class="picture text-center"

@@ -239,10 +239,18 @@
                         id="add">+</span>
                 </div>
                 <div class="action">
-                    <button class="btn btn-danger btn-lg">立即购买</button>
-                    <button id="add-cart" class="btn btn-warning btn-lg"><span
-                            class="glyphicon glyphicon-shopping-cart"></span> 加入购物车
-                    </button>
+                    <c:if test="${sessionScope.user eq null}">
+                        <button  id="buy-goods" class="btn btn-danger btn-lg" ><a href="${ctx}/sign-in.jsp">立即购买</a></button>
+                        <button href="${ctx}/sign-in.jsp" id="add-cart" class="btn btn-warning btn-lg"><span
+                            class="glyphicon glyphicon-shopping-cart"></span> <a href="${ctx}/sign-in.jsp">加入购物车</a>
+                        </button>
+                    </c:if>
+                    <c:if test="${sessionScope.user ne null}">
+                        <button id="buy-goods" class="btn btn-danger btn-lg" ><a href="${ctx}/order-confirm.jsp">立即购买</a></button>
+                        <button href="${ctx}/cart.jsp" id="add-cart" class="btn btn-warning btn-lg"><span
+                                class="glyphicon glyphicon-shopping-cart"></span> <a>加入购物车</a>
+                        </button>
+                    </c:if>
                 </div>
             </article>
         </section>
@@ -395,6 +403,7 @@
                 $(this).hide()
             };
         }
+
     });
 </script>
 </body>
