@@ -14,7 +14,6 @@ public class OrderController extends BaseController {
     private OrderService orderService;
 
 @Autowired
-
 public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
     }

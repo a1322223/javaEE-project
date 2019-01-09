@@ -175,3 +175,14 @@ select * from db_a.category;
 select * from db_a.cart;
 
 update db_a.category set categoryId = null where categoryId = 0
+
+drop table if exists db_a.orderProduct;
+create table db_a.orderProduct (
+  id       int auto_increment primary key
+  comment 'id PK',
+  productId    int 
+  comment 'productId',
+  number int  
+  comment 'product number'
+)
+  comment 'orderProduct table';
