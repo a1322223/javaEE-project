@@ -25,9 +25,9 @@
         <hr/>
         <h3>全部功能</h3><hr/>
         <ul>
-            <li class="sticker"><a href="../info.jsp">信息管理</a></li>
+            <li class="sticker"><a href="../userinfo.jsp">信息管理</a></li>
             <li class="sticker"><a href="list.jsp">地址管理</a></li>
-            <li class="sticker"><a href="../order.jsp">我的订单</a></li>
+            <li class="sticker"><a href="../order-confirm.jsp">我的订单</a></li>
         </ul>
     </section>
     <section class="col-md-10">
@@ -38,7 +38,7 @@
                     <a class="btn btn-success btn-sm" href="add.jsp">新建地址</a>
                 </c:when>
                 <c:otherwise>
-                    <h1>地址列表</h1>
+                    <h2>地址列表</h2>
                     <table class="table table-striped table-hover table-bordered table-responsive">
                         <tr>
                             <th>序号</th>
