@@ -3,6 +3,8 @@ package controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
+import model.Record;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import service.CategoryService;
 import service.ProductService;
+//import service.RecordService;
+import service.RecordService;
 import util.Constants;
 
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.List;
 public class ProductController extends BaseController {
     private ProductService productService;
     private CategoryService categoryService;
+    private RecordService recordService;
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
@@ -30,6 +35,11 @@ public class ProductController extends BaseController {
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
+    }
+
+    @Autowired
+    public void setRecordService(RecordService recordService){
+        this.recordService = recordService;
     }
 
 
@@ -88,8 +98,14 @@ public class ProductController extends BaseController {
 //    }
     @RequestMapping("detail/{id}")
     private String detail(@PathVariable int id) {
-        session.setAttribute("product", productService.queryById(id));
+        Product p = productService.queryById(id);
+        session.setAttribute("product", p);
         session.setAttribute("hotProducts", productService.queryList("queryHotProducts", null));
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser != null) {
+            Record r = new Record(null,currentUser.getId(),p.getCategoryId(),id,(Long)System.currentTimeMillis());
+            recordService.create(r);
+        }
         return "redirect:/detail.jsp";
     }
 

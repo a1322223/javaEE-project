@@ -242,7 +242,7 @@
                     <c:if test="${sessionScope.user eq null}">
                         <%--<button  id="buy-goods" class="btn btn-danger btn-lg" ><a href="${ctx}/sign-in.jsp">立即购买</a></button>--%>
                         <button href="${ctx}/sign-in.jsp" id="add-cart" class="btn btn-warning btn-lg"><span
-                            class="glyphicon glyphicon-shopping-cart"></span> <a href="${ctx}/sign-in.jsp">加入购物车</a>
+                                class="glyphicon glyphicon-shopping-cart"></span> <a href="${ctx}/sign-in.jsp">加入购物车</a>
                         </button>
                     </c:if>
                     <c:if test="${sessionScope.user ne null}">
@@ -253,7 +253,8 @@
                         <button href="${ctx}/cart.jsp" id="add-cart" class="btn btn-warning btn-lg"><span
                                 class="glyphicon glyphicon-shopping-cart"></span> <a>加入购物车</a>
                         </button>
-                        <button id="buy-goods" class="btn btn-danger btn-lg" ><a href="${ctx}/cart/queryAll">去结算</a></button>
+                        <button id="buy-goods" class="btn btn-danger btn-lg"><a href="${ctx}/cart/queryAll">去结算</a>
+                        </button>
                     </c:if>
                 </div>
             </article>
@@ -368,7 +369,7 @@
         var detailPictures = detail.attr('data-detail-pictures');
 
         $.each($.parseJSON(detailPictures), function (index, detailPicture) {
-            var img = '<img src="${img}'+'detail_pictures/' + supId + '/' + subId + '/' + pId + '/' + detailPicture + '"/>';
+            var img = '<img src="${img}' + 'detail_pictures/' + supId + '/' + subId + '/' + pId + '/' + detailPicture + '"/>';
             detail.append(img);
         });
 
@@ -410,39 +411,39 @@
     });
     <%--//    wgh0807: 立即购买 （采用备用方案 -> 去结算）--%>
     <%--function buyNow() {--%>
-        <%--var ids = [];--%>
-        <%--var productId = $('#product').attr('data-product-id');--%>
-        <%--var number = $('#num').val();--%>
-        <%--ids.push(parseInt(productId));--%>
+    <%--var ids = [];--%>
+    <%--var productId = $('#product').attr('data-product-id');--%>
+    <%--var number = $('#num').val();--%>
+    <%--ids.push(parseInt(productId));--%>
 
-        <%--alert(ids);--%>
-        <%--$.ajax({--%>
-            <%--url: '${ctx}/cart/create',--%>
-            <%--type: 'post',--%>
-            <%--data: {'productId': productId, 'number': number},--%>
-            <%--dataType: 'json',--%>
-            <%--success: function (data) {--%>
-                <%--console.log('join cart ',data)--%>
-                <%--if (data.result) {--%>
-                    <%--var cartNumber = $('#cart-number');--%>
-                    <%--var currentCartNumber = cartNumber.text();--%>
-                    <%--cartNumber.text(parseInt(currentCartNumber) + parseInt(number));--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
+    <%--alert(ids);--%>
+    <%--$.ajax({--%>
+    <%--url: '${ctx}/cart/create',--%>
+    <%--type: 'post',--%>
+    <%--data: {'productId': productId, 'number': number},--%>
+    <%--dataType: 'json',--%>
+    <%--success: function (data) {--%>
+    <%--console.log('join cart ',data)--%>
+    <%--if (data.result) {--%>
+    <%--var cartNumber = $('#cart-number');--%>
+    <%--var currentCartNumber = cartNumber.text();--%>
+    <%--cartNumber.text(parseInt(currentCartNumber) + parseInt(number));--%>
+    <%--}--%>
+    <%--}--%>
+    <%--});--%>
 
-        <%--$.ajax({--%>
-            <%--url: '${ctx}/cart/orderConfirm',--%>
-            <%--type: 'post',--%>
-            <%--data: {'ids': ids}, // select ... from ... where cart.id in (1, 2)--%>
-            <%--dataType: 'json',--%>
-            <%--success: function (data) {--%>
-                <%--console.log('goto confirm ',data)--%>
-                <%--if (data.result) {--%>
-                    <%--// window.location.href = 'order-confirm.jsp';--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
+    <%--$.ajax({--%>
+    <%--url: '${ctx}/cart/orderConfirm',--%>
+    <%--type: 'post',--%>
+    <%--data: {'ids': ids}, // select ... from ... where cart.id in (1, 2)--%>
+    <%--dataType: 'json',--%>
+    <%--success: function (data) {--%>
+    <%--console.log('goto confirm ',data)--%>
+    <%--if (data.result) {--%>
+    <%--// window.location.href = 'order-confirm.jsp';--%>
+    <%--}--%>
+    <%--}--%>
+    <%--});--%>
     <%--}--%>
 </script>
 </body>

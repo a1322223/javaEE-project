@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="record">
+    <insert id="create" parameterType="record" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO db_a.record (
+            userId, 
+            categoryId, 
+            productId, 
+            recordTime
+        )
+        VALUES (
+            #{userId}, 
+            #{categoryId}, 
+            #{productId}, 
+            #{recordTime}
+        )
+    </insert>
+    <delete id="remove">
+        DELETE FROM db_a.record
+        WHERE record.id = #{id}
+    </delete>
+    <update id="modify">
+        UPDATE db_a.record
+        SET
+            userId = #{userId}, 
+            categoryId = #{categoryId}, 
+            productId = #{productId}, 
+            recordTime = #{recordTime}
+        WHERE record.id = #{id}
+    </update>
+    <select id="queryAll" resultType="record">
+        SELECT *
+        FROM db_a.record
+        ORDER BY id
+    </select>
+    <select id="queryById" resultType="record">
+        SELECT *
+        FROM db_a.record
+        WHERE record.id = #{id}
+    </select>
+</mapper>
