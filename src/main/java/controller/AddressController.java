@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import model.Address;
 import service.AddressService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("address")
 public class AddressController extends BaseController {
@@ -73,9 +75,24 @@ public class AddressController extends BaseController {
         return "redirect:/portal/address/list.jsp";
     }
 
+    @RequestMapping("queryAllList")
+    @ResponseBody
+    private List<Address> queryAllList(){
+        User user = (User) session.getAttribute("user");
+        List<Address> addressList =  addressService.queryList("queryAll", user.getId());
+        return addressList;
+    }
+
     @RequestMapping("queryById/{id}/{isOrder}")
     private String queryById(@PathVariable("id") Integer id, @PathVariable("isOrder") Integer isOrder) {
         session.setAttribute("address", addressService.queryById(id));
         return "redirect:/portal/address/edit.jsp?isOrder="+isOrder;
+    }
+
+    @RequestMapping("queryById/{id}")
+    @ResponseBody
+    private Address queryById(@PathVariable("id") Integer id){
+        Address address = addressService.queryById(id);
+        return address;
     }
 }
