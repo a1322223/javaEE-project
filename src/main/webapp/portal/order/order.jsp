@@ -28,14 +28,6 @@
     </section>
     <section class="col-md-10">
         <article>
-            <%--<c:choose>--%>
-            <%--<c:when test="${fn:length(sessionScope.list) eq 0}">--%>
-            <%--<p class="text-warning">您还没有收货地址</p>--%>
-            <%--<a class="btn btn-success btn-sm" href="add.jsp">新建地址</a>--%>
-            <%--</c:when>--%>
-            <%--<c:otherwise>--%>
-            <%--<a class="btn btn-success btn-sm" href="add.jsp">添加地址</a>--%>
-            <%--<hr/>--%>
             <h2>订单列表</h2>
             <table class="table table-striped table-hover table-bordered table-responsive">
                 <tr>
@@ -71,8 +63,6 @@
                 <%--</tr>--%>
                 <%--</c:forEach>--%>
             </table>
-            <%--</c:otherwise>--%>
-            <%--</c:choose>--%>
         </article>
     </section>
 </main>
