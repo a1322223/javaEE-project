@@ -17,6 +17,6 @@ public class Order implements Serializable {
     private String finishTime;
     private double totalPrice;
     private Integer status;
-    private String address;
+    private Integer addressId;
     private Integer userId;
 }

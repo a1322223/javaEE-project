@@ -11,16 +11,16 @@
             finishTime,
             totalPrice,
             status,
-            address,
+            addressId,
             userId
         )
         VALUES (
-#             {orderProducts},
+            #{orderProducts},
             now(),
             #{finishTime},
             #{totalPrice},
             #{status},
-            #{address},
+            #{addressId},
             #{userId}
         )
     </insert>

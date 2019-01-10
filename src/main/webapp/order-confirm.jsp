@@ -247,7 +247,6 @@
             }
         });
         $(document).on('click', '.changeAddress', function () {
-            $(".changeAddress").css("background", "#FFF");
             addressId = $(this).attr('id');
             $('#'+addressId).css("background", "");
             $(this).css("background", "#4444");
@@ -265,6 +264,12 @@
                     $('#deliveryAddress').text(data.province+data.city+data.area+data.town+data.detail);
                 }
             });
+        });
+        $(document).on('click', '#pay', function () {
+            var outTradeNo = addressId+123;
+            var subject = '商品支付';
+            var totalAmount = "${totalPrice - totalDiscount}";
+            window.location.href = '/trade_precreate.jsp?outTradeNo='+outTradeNo+'&subject="'+subject+'"&totalAmount='+totalAmount;
         });
         $(document).on('click', '#pay', function () {
             var payMoney = ${totalPrice - totalDiscount};
