@@ -188,7 +188,7 @@
     console.log($("#errorInfo").text().length);
     if ($("#errorInfo").text().length != 0) {
         $("#notFound").show();
-        if ($("#root")){
+        if ($("#root").html().length<10){
             $("#haveOther").hide();
         }
     }

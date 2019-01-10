@@ -247,6 +247,7 @@
             }
         });
         $(document).on('click', '.changeAddress', function () {
+            $(".changeAddress").css("background", "#FFF");
             addressId = $(this).attr('id');
             $('#'+addressId).css("background", "");
             $(this).css("background", "#4444");
@@ -265,7 +266,12 @@
                 }
             });
         });
+        $(document).on('click', '#pay', function () {
+            var payMoney = ${totalPrice - totalDiscount};
+            window.location.href = '/pay.jsp?payMoney='+payMoney;
+        });
     });
+
 </script>
 </body>
 </html>

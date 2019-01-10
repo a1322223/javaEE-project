@@ -5,29 +5,19 @@
 
 <mapper namespace="record">
     <insert id="create" parameterType="record" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO db_a.record (
-            userId, 
-            categoryId, 
-            productId, 
-            recordTime
-        )
-        VALUES (
-            #{userId}, 
-            #{categoryId}, 
-            #{productId}, 
-            #{recordTime}
-        )
+        INSERT INTO db_a.record (userId, categoryId, productId, recordTime)
+        VALUES (#{userId}, #{categoryId}, #{productId}, #{recordTime})
     </insert>
     <delete id="remove">
-        DELETE FROM db_a.record
+        DELETE
+        FROM db_a.record
         WHERE record.id = #{id}
     </delete>
     <update id="modify">
         UPDATE db_a.record
-        SET
-            userId = #{userId}, 
-            categoryId = #{categoryId}, 
-            productId = #{productId}, 
+        SET userId     = #{userId},
+            categoryId = #{categoryId},
+            productId  = #{productId},
             recordTime = #{recordTime}
         WHERE record.id = #{id}
     </update>
@@ -40,5 +30,12 @@
         SELECT *
         FROM db_a.record
         WHERE record.id = #{id}
+    </select>
+    <select id="queryFiveByUserId"  resultType="record">
+        SELECT *
+        FROM db_a.record
+        where userId = #{userId}
+        ORDER BY id desc
+        limit 0,5
     </select>
 </mapper>

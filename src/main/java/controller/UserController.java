@@ -1,20 +1,14 @@
 package controller;
 
-import model.Mail;
-import model.UserInfo;
+import model.*;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import model.User;
-import service.CartService;
-import service.MailService;
-import service.UserInfoService;
-import service.UserService;
+import service.*;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("user")
@@ -27,6 +21,11 @@ public class UserController extends BaseController {
     private MailService mailService;
 
     private CartService cartService;
+
+    private RecordService recordService;
+
+    private ProductService productService;
+
 
     @Autowired
     public void setCartService(CartService cartService) {
@@ -46,6 +45,16 @@ public class UserController extends BaseController {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setRecordService(RecordService recordService) {
+        this.recordService = recordService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @RequestMapping(value = "checkEmail", method = RequestMethod.POST)
@@ -128,6 +137,31 @@ public class UserController extends BaseController {
         user = userService.signIn(user);
         if (user != null) {
             session.setAttribute("user", user);
+
+
+            List<Record> recordList = recordService.queryList("queryFiveByUserId", user.getId());
+            System.out.println("recordList : "+recordList);
+            Set<Integer> uLoveSet = new HashSet<>();
+            List<Integer> uLoveList = new LinkedList<>();
+
+            for (Record r : recordList) {
+                List<Product> list = productService.queryList("findFiveBySameCategoryId", r.getCategoryId());
+
+                for (Product p:list) {
+                    uLoveSet.add(p.getProductId());
+                }
+            }
+
+            for (Integer i:uLoveSet) {
+                uLoveList.add(i);
+                if (uLoveList.size() == 5) {
+                    break;
+                }
+            }
+
+            System.out.println("uloveList : "+uLoveList);
+            session.setAttribute("uLove",uLoveList);
+
             Integer cartNumber = (Integer) cartService.query("queryCartNumber", user.getId());
             if (cartNumber != null) {
                 session.setAttribute("cartNumber", cartNumber);
