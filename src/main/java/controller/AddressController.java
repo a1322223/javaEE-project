@@ -62,7 +62,7 @@ public class AddressController extends BaseController {
         if (address.getStatus() == 1) {
             unsetDefaultAddress(address.getId());
         }
-        if(isOrder==1){
+        if(isOrder == 1){
             return "redirect:/order-confirm.jsp";
         }
         return "redirect:/address/queryAll";
